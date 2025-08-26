@@ -1,9 +1,62 @@
-﻿@*
+﻿@model IEnumerable<SalesWebMvc.Models.Seller> //Define o tipo de objeto que será recebido
+
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Sellers";
 }
 
 <h2>Sellers</h2>
 
-<p>Sellers index page</p>
+<table class="table table-striped table-hover"> <!--table-striped: define o estilo da tabela como listrada. table-hover: adiciona um efeito visual quando se passa o mouse em cima -->
+    <thead>
+        <!--No cabeçalho da tabel-->
+                <tr> <!--Na primeira linha da tabela-->
+            <th> <!--Na primeira coluna-->
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th> 
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BaseSalary)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var seller in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => seller.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => seller.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => seller.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => seller.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => seller.BaseSalary)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-router-id="@seller.Id">Edit</a>
+                    <a asp-action="Details" asp-router-id="@seller.Id">Details</a>
+                    <a asp-action="Delete" asp-router-id="@seller.Id">Delete</a>
+                    <!--asp-action="Edit" → chama o método Edit do controller SellersController -->
+                    <!--asp-router-id é um parâmetro que vai ser incluido na URL final, digamos que ele completa o endereço de destino-->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
