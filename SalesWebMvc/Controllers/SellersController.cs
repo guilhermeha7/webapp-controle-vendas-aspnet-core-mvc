@@ -2,6 +2,7 @@
 using NuGet.Common;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
+using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
 using System.Diagnostics.Contracts;
 
@@ -11,9 +12,13 @@ namespace SalesWebMvc.Controllers
     {
         private readonly SellerService _sellerService;
 
-        public SellersController(SellerService sellerService)
+        private readonly DepartmentService _departmentService;
+
+        public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
+
         }
 
         public IActionResult Index()
@@ -24,7 +29,9 @@ namespace SalesWebMvc.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var departments = _departmentService.GetDepartmentsList();
+            var viewModel = new SellerFormViewModel { Departments = departments };
+            return View(viewModel);
         }
 
         [HttpPost] //Indica que esse método só deve responder a requisições POST.
@@ -33,6 +40,30 @@ namespace SalesWebMvc.Controllers
         {
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index)); //nameof melhora a manutenibilidade do software. Se o método Index mudar de nome, então aqui será mudado também automaticamente
+        }
+        public IActionResult Delete(int? id) //Esse ? significa que o parâmetro é nullable, ou seja, pode ser nulo
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

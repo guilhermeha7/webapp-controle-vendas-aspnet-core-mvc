@@ -14,6 +14,8 @@ builder.Services.AddDbContext<SalesWebMvcContext>(options =>
 // Quando um SeedingService for criado, ele vai receber automaticamente as dependências que precisa
 builder.Services.AddScoped<SeedingService>();
 builder.Services.AddScoped<SellerService>();
+builder.Services.AddScoped<DepartmentService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
