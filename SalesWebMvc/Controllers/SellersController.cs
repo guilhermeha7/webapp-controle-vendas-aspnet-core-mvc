@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using SalesWebMvc.Services.Excepcions;
 using System.Diagnostics.Contracts;
 
 namespace SalesWebMvc.Controllers
@@ -66,14 +68,14 @@ namespace SalesWebMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var obj = _sellerService.GetById(id.Value);
+            var obj = _sellerService.GetById(id);
 
             if (obj == null)
             {
@@ -81,6 +83,42 @@ namespace SalesWebMvc.Controllers
             }
 
             return View(obj);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Seller seller = _sellerService.GetById(id.Value);
+
+            if (seller == null)
+            {
+                return NotFound();
+            }
+
+            List<Department> departments = _departmentService.GetDepartmentsList();
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Seller seller)
+        {
+            //Criar, atualizar e deletar um registro é uma operação sensível, por isso é bom usar try catch
+            try
+            {
+                _sellerService.Update(seller);
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -1,22 +1,38 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
+
+
+.navbar-nav .nav-link:hover {
+    color: #6600ff !important; /* O Bootstrap aplicava a cor padrão em .nav-link e por isso tinha prioridade. O !important garante que essa cor definida vença. */
+    transition: color 0.3s ease; /*Faz a mudança de cor ser suave, ao longo de 0,3 segundos, em vez de acontecer instantaneamente.*/
+}
+
+.btn-primary {
+    background-color: #6666ff;
+    border-color: #6666ff;
+}
+
+    .btn-primary:hover {
+        background-color: #9999ff;
+        order-color: #9999ff;
+    }

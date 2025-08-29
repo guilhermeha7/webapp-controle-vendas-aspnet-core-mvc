@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
+using SalesWebMvc.Services.Excepcions;
 
 namespace SalesWebMvc.Services
 {
@@ -38,6 +39,25 @@ namespace SalesWebMvc.Services
             var obj = _context.Seller.Find(id);
             _context.Seller.Remove(obj);
             _context.SaveChanges();
+        }
+
+        public void Update(Seller seller)
+        {
+            if (!_context.Seller.Any(x => x.Id == seller.Id)) //Se no db não tiver um seller com o Id igual ao Id que se quer atualizar então
+            {
+                throw new NotFoundException("Seller not found");
+            }
+
+            //Ao tentar atualizar, o banco de dados pode lançar uma exceção de conflito de concorrência
+            try
+            {
+                _context.Seller.Update(seller);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
         }
     }
 }

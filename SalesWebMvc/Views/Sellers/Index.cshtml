@@ -58,7 +58,7 @@
                     <a asp-action="Details" asp-route-id="@seller.Id">Details</a>
                     <a asp-action="Delete" asp-route-id="@seller.Id">Delete</a>
                     <!--asp-action="Edit" → chama o método Edit do controller SellersController -->
-                    <!--asp-router-id é um parâmetro que vai ser incluido na URL final, digamos que ele completa o endereço de destino-->
+                    <!--asp-router-id completa a URL que será gerada e indica qual valor será passado como parâmetro para o método no controller-->
                 </td>
             </tr>
         }
