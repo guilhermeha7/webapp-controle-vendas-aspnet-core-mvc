@@ -41,7 +41,5 @@
     </dd>
 </dl>
 
-<form asp-action="Edit">
-    <input type="submit" value="Edit" class="btn btn-primary" />
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
-</form>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+<a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>

@@ -32,7 +32,17 @@ body {
     border-color: #6666ff;
 }
 
-    .btn-primary:hover {
-        background-color: #9999ff;
-        order-color: #9999ff;
-    }
+.btn-primary:hover {
+    background-color: #9999ff;
+    border-color: #9999ff;
+}
+
+a {
+    color: #6666ff; /* cor normal do link */
+    text-decoration: none; /* opcional: remove o sublinhado */
+}
+
+a:hover {
+    color: #9999ff; /* cor quando passa o mouse */
+}
+
