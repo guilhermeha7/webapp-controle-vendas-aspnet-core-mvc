@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
 using SalesWebMvc.Services;
 
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SalesWebMvcContext>(options =>
     options.UseMySql(
@@ -10,6 +13,8 @@ builder.Services.AddDbContext<SalesWebMvcContext>(options =>
         new MySqlServerVersion(new Version(8, 0, 32)) // versão do MySQL que você está usando
     )
 );
+
+
 
 // Quando um SeedingService for criado, ele vai receber automaticamente as dependências que precisa
 builder.Services.AddScoped<SeedingService>();

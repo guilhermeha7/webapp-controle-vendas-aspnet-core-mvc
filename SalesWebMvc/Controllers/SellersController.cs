@@ -37,12 +37,32 @@ namespace SalesWebMvc.Controllers
             return View(viewModel);
         }
 
-        [HttpPost] //Indica que esse método só deve responder a requisições POST.
+        [HttpPost] //Indica que esse método é uma requisição POST.
         [ValidateAntiForgeryToken] //Protege contra ataques CSRF, validando um token que deve vir do formulário enviado pelo navegador.
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                /*var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x => new { x.Key, x.Value.Errors })
+                .ToArray();
+
+                foreach (var error in errors)
+                {
+                    foreach (var e in error.Errors)
+                    {
+                        Console.WriteLine($"Campo {error.Key} -> Erro: {e.ErrorMessage}");
+                    }
+                }*/
+
+                var departments = _departmentService.GetDepartmentsList();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel);
+            }
+
             _sellerService.Insert(seller);
-            return RedirectToAction(nameof(Index)); //nameof melhora a manutenibilidade do software. Se o método Index mudar de nome, então aqui será mudado também automaticamente
+            return RedirectToAction(nameof(Index)); //nameof melhora a manutenibilidade do software. Se o método Index mudar de nome, então o compilador irá alertar incoerências
         }
         public IActionResult Delete(int? id) //Esse ? significa que o parâmetro é nullable, ou seja, pode ser nulo
         {
@@ -71,7 +91,7 @@ namespace SalesWebMvc.Controllers
             }
             catch (Exception e)
             {
-                RedirectToAction(nameof(Error), new { message =  e.Message });
+                RedirectToAction(nameof(Error), new { message = e.Message });
             }
 
             return RedirectToAction(nameof(Index));
@@ -117,6 +137,13 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Seller seller)
         {
+            if (!ModelState.IsValid) //Se der algum problema de validação
+            {
+                var departments = _departmentService.GetDepartmentsList();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(viewModel); //Recarregue a página, com os dados já inseridos
+            }
+
             //Criar, atualizar e deletar um registro é uma operação sensível, por isso é bom usar try catch
             try
             {
