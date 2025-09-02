@@ -21,25 +21,24 @@ namespace SalesWebMvc.Controllers
         {
             _sellerService = sellerService;
             _departmentService = departmentService;
-
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var list = _sellerService.GetSellersList();
+            var list = await _sellerService.GetSellersListAsync();
             return View(list);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var departments = _departmentService.GetDepartmentsList();
+            var departments = await _departmentService.GetDepartmentsListAsync();
             var viewModel = new SellerFormViewModel { Departments = departments };
             return View(viewModel);
         }
 
         [HttpPost] //Indica que esse método é uma requisição POST.
         [ValidateAntiForgeryToken] //Protege contra ataques CSRF, validando um token que deve vir do formulário enviado pelo navegador.
-        public IActionResult Create(Seller seller)
+        public async Task<IActionResult> Create(Seller seller)
         {
             if (!ModelState.IsValid)
             {
@@ -56,22 +55,22 @@ namespace SalesWebMvc.Controllers
                     }
                 }*/
 
-                var departments = _departmentService.GetDepartmentsList();
+                var departments = await _departmentService.GetDepartmentsListAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             }
 
-            _sellerService.Insert(seller);
-            return RedirectToAction(nameof(Index)); //nameof melhora a manutenibilidade do software. Se o método Index mudar de nome, então o compilador irá alertar incoerências
+            await _sellerService.InsertAsync(seller);
+            return RedirectToAction(nameof(Index)); //nameof melhora a manutenibilidade do software. Se o método Index mudar de nome, então o compilador irá alertar que o nome mudou
         }
-        public IActionResult Delete(int? id) //Esse ? significa que o parâmetro é nullable, ou seja, pode ser nulo
+        public async Task<IActionResult> Delete(int? id) //Esse ? significa que o parâmetro é nullable, ou seja, pode ser nulo
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _sellerService.GetById(id.Value);
+            var obj = await _sellerService.GetByIdAsync(id.Value);
 
             if (obj == null)
             {
@@ -83,11 +82,11 @@ namespace SalesWebMvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _sellerService.Remove(id);
+                await _sellerService.RemoveAsync(id);
             }
             catch (Exception e)
             {
@@ -97,14 +96,14 @@ namespace SalesWebMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _sellerService.GetById(id.Value);
+            var obj = await _sellerService.GetByIdAsync(id.Value);
 
             if (obj == null)
             {
@@ -114,32 +113,32 @@ namespace SalesWebMvc.Controllers
             return View(obj);
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            Seller seller = _sellerService.GetById(id.Value);
+            Seller seller = await _sellerService.GetByIdAsync(id.Value);
 
             if (seller == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
-            List<Department> departments = _departmentService.GetDepartmentsList();
+            List<Department> departments = await _departmentService.GetDepartmentsListAsync();
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Seller seller)
+        public async Task<IActionResult> Edit(Seller seller)
         {
             if (!ModelState.IsValid) //Se der algum problema de validação
             {
-                var departments = _departmentService.GetDepartmentsList();
+                var departments = await _departmentService.GetDepartmentsListAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel); //Recarregue a página, com os dados já inseridos
             }
@@ -147,7 +146,7 @@ namespace SalesWebMvc.Controllers
             //Criar, atualizar e deletar um registro é uma operação sensível, por isso é bom usar try catch
             try
             {
-                _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
             }
             catch (Exception e)
             {

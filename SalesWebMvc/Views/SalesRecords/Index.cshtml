@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Sales Records";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr />
+
+<!--Formulário SimpleSearch-->
+<!--1 componente para escolher a data mínima e outro para escolher a data máxima-->
+<!--1 botão de enviar (submit)-->
+<form asp-action="SimpleSearch">
+    <fieldset>
+        <!--representa um grupo de campos de formulário-->
+        <legend>Simple Search</legend> <!--é o nome que dá título ao grupo de campos de formulário-->
+        <div class="mb-3 row align-items-center">
+            <!--row cria o grid de 12 colunas do bootstrap e também indica que as colunas dentro irão para a mesma linha-->
+            <label class="col-sm-1 col-form-label">Min Date:</label>
+            <div class="col-sm-2">
+                <input type="date" name="minDate" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-3 row align-items-center">
+            <label class="col-sm-1 col-form-label">Max Date:</label>
+            <div class="col-sm-2">
+                <input type="date" name="maxDate" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-5">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </fieldset>
+</form>
+
+<!--Formulário GroupingSearch-->
+<!--1 botão para escolher a data mínima e outro para escolher a data máxima-->
+<!--Botão Submit-->
+<form asp-action="GroupingSearch">
+    <fieldset>
+        <legend>Grouping Search</legend>
+        <div class="mb-3 row align-items-center">
+            <label class="col-sm-1 col-form-label">Min Date:</label>
+            <div class="col-sm-2">
+                <input type="date" name="minDate" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-3 row align-items-center">
+            <label class="col-sm-1 col-form-label">Max Date:</label>
+            <div class="col-sm-2">
+                <input type="date" name="maxDate" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </fieldset>
+</form>
