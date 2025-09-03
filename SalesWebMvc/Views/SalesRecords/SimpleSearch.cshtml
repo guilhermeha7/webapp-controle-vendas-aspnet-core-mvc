@@ -1,7 +1,89 @@
-﻿@{
+﻿@model IEnumerable<SalesWebMvc.Models.SalesRecord>;
+
+@{
     ViewData["Title"] = "Simple Search";
 }
 
 <h2>@ViewData["Title"]</h2>
 
 <hr />
+
+
+<form asp-action="SimpleSearch">
+    <div class="row align-items-center mb-4 mt-4"> <!--align-items-center linha verticalmente todos os filhos de uma row ou de um elemento display == flex-->
+        <div class="col-auto">
+            <label class="col-form-label">Min date: </label>
+        </div>
+        <div class="col-sm-2">
+            <input type="date" name="minDate" class="form-control" value="@ViewData["minDate"]" /> <!--O campo value corresponde ao que aparece escrito em um input-->
+        </div>
+        <div class="col-auto">
+            <label class="col-form-label">Max date: </label>
+        </div>
+        <div class="col-sm-2">
+            <input type="date" name="maxDate" class="form-control" value="@ViewData["maxDate"]" />
+        </div>
+        <div class="col-sm-2">
+            <input type="submit" value="Filter" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+
+<div class="mb-4">
+    Total Sales: @Model.Sum(obj => obj.Amount).ToString("F2")
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <!--Cabeçalho da tabela-->
+        <tr>
+            <!--Primeira linha-->
+            <th>
+                <!--Primeira coluna-->
+                @Html.DisplayNameFor(Model => Model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Seller)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model.Seller.Department)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var saleRecord in Model)
+        {
+            <tr>
+                <!--Primeira linha-->
+                <td>
+                    <!--Primeira coluna-->
+                    @Html.DisplayFor(modelItem => saleRecord.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => saleRecord.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => saleRecord.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => saleRecord.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => saleRecord.Seller.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => saleRecord.Seller.Department.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

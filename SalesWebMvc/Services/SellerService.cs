@@ -7,7 +7,8 @@ namespace SalesWebMvc.Services
 {
     public class SellerService
     {
-        private readonly SalesWebMvcContext _context;
+        //readonly significa que o campo só pode receber valor na declaração ou dentro do construtor da classe
+        private readonly SalesWebMvcContext _context; 
 
         public SellerService(SalesWebMvcContext context)
         {

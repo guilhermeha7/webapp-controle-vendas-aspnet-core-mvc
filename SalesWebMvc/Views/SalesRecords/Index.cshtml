@@ -15,13 +15,13 @@
         <legend>Simple Search</legend> <!--é o nome que dá título ao grupo de campos de formulário-->
         <div class="mb-3 row align-items-center">
             <!--row cria o grid de 12 colunas do bootstrap e também indica que as colunas dentro irão para a mesma linha-->
-            <label class="col-sm-1 col-form-label">Min Date:</label>
+            <label for="minDate" class="col-sm-1 col-form-label">Min Date:</label>
             <div class="col-sm-2">
-                <input type="date" name="minDate" class="form-control" />
+                <input type="date" name="minDate" class="form-control" /> <!--O atributo "name" em HTML guarda os valores digitados pelo usuário-->
             </div>
         </div>
         <div class="mb-3 row align-items-center">
-            <label class="col-sm-1 col-form-label">Max Date:</label>
+            <label for="maxDate" class="col-sm-1 col-form-label">Max Date:</label>
             <div class="col-sm-2">
                 <input type="date" name="maxDate" class="form-control" />
             </div>
