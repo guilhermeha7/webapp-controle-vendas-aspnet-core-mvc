@@ -20,7 +20,18 @@ namespace SalesWebMvc.Services
                 .Include(sr => sr.Seller) //Inclui a coluna Seller
                 .Include(sr => sr.Seller.Department) //Inclui a coluna Department
                 .OrderByDescending(sr => sr.Date)
-                .ToListAsync();
+                .ToListAsync(); 
+        }
+
+        public async Task<List<IGrouping<Department,SalesRecord>>> GetSalesListByDepartmentAsync(DateTime minDate, DateTime maxDate)
+        {
+            return await _context.SalesRecord
+                .Where(sr => sr.Date >= minDate && sr.Date <= maxDate)
+                .Include(sr => sr.Seller)
+                .Include(sr => sr.Seller.Department)
+                .OrderByDescending(sr => sr.Date)
+                .GroupBy(sr => sr.Seller.Department)
+                .ToListAsync(); //.Where.Include.GroupBy vão montando a query, mas ela somente é executada quando se usa ToListAsync()
         }
     }
 }

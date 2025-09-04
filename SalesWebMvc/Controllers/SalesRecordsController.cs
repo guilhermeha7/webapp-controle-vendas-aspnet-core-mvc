@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesWebMvc.Models;
 using SalesWebMvc.Services;
+using System.Threading.Tasks;
 
 namespace SalesWebMvc.Controllers
 {
@@ -27,9 +28,12 @@ namespace SalesWebMvc.Controllers
             return View(salesRecords);
         }
 
-        public IActionResult GroupingSearch()
+        public async Task<IActionResult> GroupingSearch(DateTime minDate, DateTime maxDate)
         {
-            return View();
+            var salesRecords = await _salesRecordService.GetSalesListByDepartmentAsync(minDate, maxDate);
+            ViewData["minDate"] = minDate.ToString("yyyy-MM-dd");
+            ViewData["maxDate"] = maxDate.ToString("yyyy-MM-dd");
+            return View(salesRecords);
         }
     }
 }

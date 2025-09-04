@@ -46,3 +46,7 @@ a:hover {
     color: #9999ff; /* cor quando passa o mouse */
 }
 
+.card-header {
+    background-color: #6666ff;
+}
+
