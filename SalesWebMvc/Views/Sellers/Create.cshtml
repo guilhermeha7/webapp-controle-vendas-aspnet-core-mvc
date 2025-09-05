@@ -2,6 +2,7 @@
 @model SalesWebMvc.Models.ViewModels.SellerFormViewModel;
 
 <h2>Create</h2>
+<h5>Seller</h5>
 
 <hr/> <!--Linha horizontal em HTML-->
 <div class="row">
@@ -10,7 +11,7 @@
         <form asp-action="Create">
             <div class="mb-3"> <!--mb-3 aplica um espaçamento posterior aos componentes-->
                 <label asp-for="Seller.Name" class="form-label"></label>
-                <input asp-for="Seller.Name" class="form-control" /> <!--asp-for passa o valor digitado pelo usuário para o campo Name do Seller-->
+                <input asp-for="Seller.Name" class="form-control" /> <!--asp-for é o lugar onde se receberá o dado-->
                 <span asp-validation-for="Seller.Name" class="text-danger"></span>
             </div>
             <div class="mb-3">

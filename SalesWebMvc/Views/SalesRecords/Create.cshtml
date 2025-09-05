@@ -1,0 +1,48 @@
+﻿@using SalesWebMvc.Models.Enums
+@model SalesWebMvc.Models.ViewModels.SalesRecordFormViewModel;
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>SalesRecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.Date" class="control-label"></label>
+                <input asp-for="SalesRecord.Date" class="form-control" />
+                <span asp-validation-for="SalesRecord.Date" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.Amount" class="control-label"></label>
+                <input asp-for="SalesRecord.Amount" class="form-control" />
+                <span asp-validation-for="SalesRecord.Amount" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.Status" class="control-label"></label>
+                <select asp-for="SalesRecord.Status" class="form-select" asp-items="@Model.StatusList"> </select> <!--asp-items recebe somente IEnumerable<SelectListItem> ou SelectList-->
+                <span asp-validation-for="SalesRecord.Status" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.SellerId" class="control-label"></label>
+                <select asp-for="SalesRecord.SellerId" class="form-select" asp-items="@(new SelectList(Model.SellersList, "Id", "Name"))"> </select>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

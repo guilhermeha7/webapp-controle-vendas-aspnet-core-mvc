@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SalesWebMvc.Models;
+using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
 using System.Threading.Tasks;
 
@@ -7,11 +9,15 @@ namespace SalesWebMvc.Controllers
 {
     public class SalesRecordsController : Controller
     {
+        //readonly indica que o campo só pode receber valor uma única vez
         private readonly SalesRecordService _salesRecordService;
+        private readonly SellerService _sellerService;
 
-        public SalesRecordsController(SalesRecordService salesRecordService)
+        public SalesRecordsController(SalesRecordService salesRecordService, SellerService sellerService)
         {
             _salesRecordService = salesRecordService;
+            _sellerService = sellerService;
+
         }
 
         public IActionResult Index()
@@ -19,6 +25,21 @@ namespace SalesWebMvc.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Create()
+        {
+            List<SelectListItem> statusList = _salesRecordService.GetSaleStatusList();
+            List<Seller> sellersList = await _sellerService.GetSellersListAsync();
+            SalesRecordFormViewModel viewModel = new SalesRecordFormViewModel { StatusList = statusList, SellersList = sellersList };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(SalesRecord salesRecord)
+        {
+            await _salesRecordService.InsertAsync(salesRecord);
+            return RedirectToAction(nameof(Index));
+        }
         public async Task<IActionResult> SimpleSearch(DateTime minDate, DateTime maxDate)
         {
             List<SalesRecord> salesRecords = await _salesRecordService.GetSalesListByDateAsync(minDate, maxDate);

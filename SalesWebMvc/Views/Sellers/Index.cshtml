@@ -7,10 +7,12 @@
     ViewData["Title"] = "Sellers";
 }
 
-<h2>Sellers</h2>
+<h2>@ViewData["Title"]</h2>
+
+<hr />
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create new</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 
 <table class="table table-hover"> <!--table-striped: define o estilo da tabela como listrada. table-hover: adiciona um efeito visual quando se passa o mouse em cima -->
@@ -53,8 +55,8 @@
                     @Html.DisplayFor(modelItem => seller.BaseSalary)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@seller.Id">Edit</a>
-                    <a asp-action="Details" asp-route-id="@seller.Id">Details</a>
+                    <a asp-action="Edit" asp-route-id="@seller.Id">Edit</a> •
+                    <a asp-action="Details" asp-route-id="@seller.Id">Details</a> •
                     <a asp-action="Delete" asp-route-id="@seller.Id">Delete</a>
                     <!--asp-action="Edit" → chama o método Edit do controller SellersController -->
                     <!--asp-router-id completa a URL que será gerada e indica qual valor será passado como parâmetro para o método no controller-->
