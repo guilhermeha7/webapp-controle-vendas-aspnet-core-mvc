@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SalesWebMvc.Controllers
@@ -55,6 +56,44 @@ namespace SalesWebMvc.Controllers
             ViewData["minDate"] = minDate.ToString("yyyy-MM-dd");
             ViewData["maxDate"] = maxDate.ToString("yyyy-MM-dd");
             return View(salesRecords);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Error), new { Message = "Id not provided" });
+            }
+
+            List<SelectListItem> statusList = _salesRecordService.GetSaleStatusList();
+            List<Seller> sellersList = await _sellerService.GetSellersListAsync();
+            SalesRecord salesRecord = await _salesRecordService.GetByIdAsync(id);
+
+            if (salesRecord == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            }
+
+            SalesRecordFormViewModel viewModel = new SalesRecordFormViewModel { StatusList = statusList, SellersList = sellersList, SalesRecord = salesRecord };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(SalesRecord salesRecord)
+        {
+            await _salesRecordService.UpdateAsync(salesRecord);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Error(string message)
+        {
+            ErrorViewModel viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }

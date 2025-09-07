@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.Enums;
+using SalesWebMvc.Services.Excepcions;
 
 namespace SalesWebMvc.Services
 {
@@ -48,6 +49,29 @@ namespace SalesWebMvc.Services
         {
             _context.SalesRecord.Add(salesRecord);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<SalesRecord> GetByIdAsync(int id)
+        {
+            return await _context.SalesRecord.FirstOrDefaultAsync(sr => sr.Id == id);
+        }
+
+        public async Task UpdateAsync(SalesRecord salesRecord)
+        {
+            if (!await _context.SalesRecord.AnyAsync(sr => sr.Id == salesRecord.Id)) 
+            {
+                throw new NotFoundException("Seller not found");
+            }
+
+            try
+            {
+                _context.Update(salesRecord);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
         }
     }
 }

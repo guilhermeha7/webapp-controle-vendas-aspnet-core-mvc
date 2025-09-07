@@ -70,6 +70,12 @@
                             <td>
                                 @Html.DisplayFor(modell => sr.Status)
                             </td>
+                            <td>
+                                <!--Edit • Details • Delete-->
+                                <a asp-action="Edit" asp-route-id="@sr.Id">Edit</a> •
+                                <a asp-action="Details" asp-route-id="@sr.Id">Details</a> •
+                                <a asp-action="Delete" asp-route-id="@sr.Id">Delete</a>
+                            </td>
                         </tr>
                     }
                 </tbody>

@@ -7,10 +7,10 @@
 <hr/> <!--Linha horizontal em HTML-->
 <div class="row">
     <!-- div representa um agrupamento de elementos e row é a “faixa horizontal” que ativa o sistema de 12 slots do Bootstrap -->
-    <div class="col-md-3"> <!--Os componentes dentro do objeto col-md-4 ganham um tamanho de 4/12 na sua extensão-->
+    <div class="col-md-3"> <!--Os componentes dentro do objeto col-md-3 ganham um tamanho de 3/12 na sua extensão-->
         <form asp-action="Create">
             <div class="mb-3"> <!--mb-3 aplica um espaçamento posterior aos componentes-->
-                <label asp-for="Seller.Name" class="form-label"></label>
+                <label asp-for="Seller.Name" class="form-label"></label> <!--label asp-for coloca o foco no campo descrito se você clicar na label->
                 <input asp-for="Seller.Name" class="form-control" /> <!--asp-for é o lugar onde se receberá o dado-->
                 <span asp-validation-for="Seller.Name" class="text-danger"></span>
             </div>

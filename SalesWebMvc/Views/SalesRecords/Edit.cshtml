@@ -1,0 +1,36 @@
+﻿@using SalesWebMvc.Models.Enums
+@model SalesWebMvc.Models.ViewModels.SalesRecordFormViewModel;
+
+<h2>Edit</h2>
+<h5>SalesRecord</h5>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-3">
+        <form asp-action="Edit">
+            <div>
+                <input type="hidden" asp-for="SalesRecord.Id" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.Date" class="control-label"></label>
+                <input asp-for="SalesRecord.Date" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.Amount" class="control-label"></label>
+                <input asp-for="SalesRecord.Amount" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.Status" class="control-label"></label>
+                <select asp-for="SalesRecord.Status" class="form-select" asp-items="@Model.StatusList"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SalesRecord.SellerId" class="control-label"></label>
+                <select asp-for="SalesRecord.SellerId" class="form-select" asp-items="@(new SelectList(Model.SellersList, "Id", "Name"))"></select>
+            </div>
+            <div>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
