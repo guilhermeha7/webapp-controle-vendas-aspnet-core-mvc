@@ -51,16 +51,16 @@ namespace SalesWebMvc.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<SalesRecord> GetByIdAsync(int id)
+        public async Task<SalesRecord> GetByIdAsync(int? id)
         {
-            return await _context.SalesRecord.FirstOrDefaultAsync(sr => sr.Id == id);
+            return await _context.SalesRecord.Include(sr => sr.Seller).FirstOrDefaultAsync(sr => sr.Id == id);
         }
 
         public async Task UpdateAsync(SalesRecord salesRecord)
         {
             if (!await _context.SalesRecord.AnyAsync(sr => sr.Id == salesRecord.Id)) 
             {
-                throw new NotFoundException("Seller not found");
+                throw new NotFoundException("SalesRecord not found");
             }
 
             try
@@ -73,5 +73,19 @@ namespace SalesWebMvc.Services
                 throw new DbConcurrencyException(e.Message);
             }
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            SalesRecord salesRecordToDelete = await GetByIdAsync(id);
+
+            if (salesRecordToDelete == null)
+            {
+                throw new NotFoundException("Id not found");
+            }
+
+            _context.Remove(salesRecordToDelete);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

@@ -58,8 +58,11 @@ namespace SalesWebMvc.Controllers
             return View(salesRecords);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, DateTime minDate, DateTime maxDate)
         {
+            ViewData["minDate"] = minDate;
+            ViewData["maxDate"] = maxDate;
+            
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Id not provided" });
@@ -80,10 +83,52 @@ namespace SalesWebMvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SalesRecord salesRecord)
+        public async Task<IActionResult> Edit(SalesRecord salesRecord, DateTime minDate, DateTime maxDate)
         {
             await _salesRecordService.UpdateAsync(salesRecord);
+            //return RedirectToAction(nameof(SimpleSearch), new { minDate, maxDate });
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            SalesRecord salesRecord = await _salesRecordService.GetByIdAsync(id);
+
+            if (salesRecord == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not found"});
+            }
+
+            return View(salesRecord);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _salesRecordService.DeleteAsync(id);
+            }
+            catch (Exception e)
+            {
+                RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+
+            return View(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            SalesRecord salesRecord = await _salesRecordService.GetByIdAsync(id);
+
+            if (salesRecord == null)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
+            }
+
+
+            return View(salesRecord);
         }
 
         public IActionResult Error(string message)

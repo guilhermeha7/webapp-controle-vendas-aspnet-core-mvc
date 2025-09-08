@@ -2,7 +2,7 @@
 @model SalesWebMvc.Models.ViewModels.SalesRecordFormViewModel;
 
 <h2>Edit</h2>
-<h5>SalesRecord</h5>
+<h5>Sales Record</h5>
 
 <hr />
 
@@ -11,6 +11,8 @@
         <form asp-action="Edit">
             <div>
                 <input type="hidden" asp-for="SalesRecord.Id" />
+                <input type="hidden" name="minDate" value="@ViewData["minDate"]" /> <!--Em um campo hidden, "name" é o nome do dado que você quer enviar ao servidor quando o formulário for submetido e o atributo value é o valor que vai ser enviado-->
+                <input type="hidden" name="maxDate" value="@ViewData["maxDate"]" />
             </div>
             <div class="mb-3">
                 <label asp-for="SalesRecord.Date" class="control-label"></label>

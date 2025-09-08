@@ -10,7 +10,7 @@
     <div class="col-md-3"> <!--Os componentes dentro do objeto col-md-3 ganham um tamanho de 3/12 na sua extensão-->
         <form asp-action="Create">
             <div class="mb-3"> <!--mb-3 aplica um espaçamento posterior aos componentes-->
-                <label asp-for="Seller.Name" class="form-label"></label> <!--label asp-for coloca o foco no campo descrito se você clicar na label->
+                <label asp-for="Seller.Name" class="form-label"></label> <!--label asp-for coloca o foco no campo descrito se você clicar na label-->
                 <input asp-for="Seller.Name" class="form-control" /> <!--asp-for é o lugar onde se receberá o dado-->
                 <span asp-validation-for="Seller.Name" class="text-danger"></span>
             </div>
