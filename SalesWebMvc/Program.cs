@@ -26,6 +26,15 @@ builder.Services.AddScoped<SalesRecordService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDistributedMemoryCache(); // precisa para armazenar a sessão em memória
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // tempo de expiração
+    options.Cookie.HttpOnly = true; // mais seguro
+    options.Cookie.IsEssential = true; // sempre ativa
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,6 +59,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

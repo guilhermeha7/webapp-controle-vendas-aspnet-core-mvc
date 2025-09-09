@@ -35,5 +35,12 @@
 <form asp-action="Delete" method="post">
     <input type="hidden" asp-for="Id" />
     <input type="submit" class="btn btn-danger" value="Delete" />
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    @if (ViewData["IsSimpleSearch"].ToString() == "false")
+    {
+        <a asp-action="GroupingSearch" asp-route-minDate="@ViewData["minDate"]" asp-route-maxDate="@ViewData["maxDate"]" class="btn btn-outline-secondary">Back to List</a>
+    }
+    else
+    {
+        <a asp-action="SimpleSearch" asp-route-minDate="@ViewData["minDate"]" asp-route-maxDate="@ViewData["maxDate"]" class="btn btn-outline-secondary">Back to List</a>
+    }
 </form>

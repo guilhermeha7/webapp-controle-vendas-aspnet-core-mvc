@@ -35,5 +35,13 @@
 <form asp-action="Edit" method="get">
     <input type="hidden" asp-for="Id" />
     <input type="submit" class="btn btn-primary" value="Edit" />
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    @if ((string)ViewData["IsSimpleSearch"] == "false")
+    {
+        <a asp-action="GroupingSearch" asp-route-minDate="@ViewData["minDate"]" asp-route-maxDate="@ViewData["maxDate"]" class="btn btn-outline-secondary">Back to List</a>
+    }
+    else 
+    {
+        <a asp-action="SimpleSearch" asp-route-minDate="@ViewData["minDate"]" asp-route-maxDate="@ViewData["maxDate"]" class="btn btn-outline-secondary">Back to List</a>
+    }
+
 </form>
