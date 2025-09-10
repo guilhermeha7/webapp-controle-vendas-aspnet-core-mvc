@@ -1,0 +1,8 @@
+﻿<h2 style="text-align: center;">Session Expired</h2>
+
+<h5 style="text-align: center">Redirecting to the Home Page...</h5>
+
+<!--A tag meta é usada para escrever informações que não aparecem para o usuário-->
+<!--O atributo http-equiv atualiza a página ou redireciona para outra-->
+<!--O atributo content tem a seguinte sintaxe e semântica: content="TEMPO;url=DESTINO", ou seja ele indica para onde redirecionar e quantos segundos para ativar -->
+<meta http-equiv="refresh" content="4;url=@Url.Action("Index", "Home")" /> 

@@ -29,7 +29,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache(); // precisa para armazenar a sessão em memória
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(20); // tempo de expiração
+    options.IdleTimeout = TimeSpan.FromMinutes(1); // tempo de expiração
     options.Cookie.HttpOnly = true; // mais seguro
     options.Cookie.IsEssential = true; // sempre ativa
 });

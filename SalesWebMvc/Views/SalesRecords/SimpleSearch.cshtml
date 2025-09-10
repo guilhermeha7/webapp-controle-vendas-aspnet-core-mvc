@@ -29,65 +29,70 @@
     </div>
 </form>
 
-
-<div class="mb-4">
-    Total Sales: @Model.Sum(obj => obj.Amount).ToString("F2")
+<div class="card shadow-sm mb-4">
+    <div class="card-header text-white p-1">
+        <h5 class="p-0 ps-1 pt-1">All Departments, Total Sales: @Model.Sum(obj => obj.Amount).ToString("F2")</h5>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-4">
+            <thead>
+                <!--Cabeçalho da tabela-->
+                <tr>
+                    <!--Primeira linha-->
+                    <th>
+                        <!--Primeira coluna-->
+                        @Html.DisplayNameFor(Model => Model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Model => Model.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Model => Model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Model => Model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Model => Model.Seller)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(Model => Model.Seller.Department)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var saleRecord in Model)
+                {
+                    <tr>
+                        <!--Primeira linha-->
+                        <td>
+                            <!--Primeira coluna-->
+                            @Html.DisplayFor(modelItem => saleRecord.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => saleRecord.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => saleRecord.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => saleRecord.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => saleRecord.Seller.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => saleRecord.Seller.Department.Name)
+                        </td>
+                        <td>
+                            <!--Edit • Details • Delete-->
+                            <a asp-action="Edit" asp-route-id="@saleRecord.Id">Edit</a> •
+                            <a asp-action="Details" asp-route-id="@saleRecord.Id">Details</a> •
+                            <a asp-action="Delete" asp-route-id="@saleRecord.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<table class="table table-hover">
-    <thead> <!--Cabeçalho da tabela-->
-        <tr> <!--Primeira linha-->
-            <th> <!--Primeira coluna-->
-                @Html.DisplayNameFor(Model => Model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model.Seller)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model.Seller.Department)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var saleRecord in Model)
-        {
-            <tr>
-                <!--Primeira linha-->
-                <td>
-                    <!--Primeira coluna-->
-                    @Html.DisplayFor(modelItem => saleRecord.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => saleRecord.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => saleRecord.Amount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => saleRecord.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => saleRecord.Seller.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => saleRecord.Seller.Department.Name)
-                </td>
-                <td>
-                    <!--Edit • Details • Delete-->
-                    <a asp-action="Edit" asp-route-id="@saleRecord.Id">Edit</a> •
-                    <a asp-action="Details" asp-route-id="@saleRecord.Id">Details</a> •
-                    <a asp-action="Delete" asp-route-id="@saleRecord.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

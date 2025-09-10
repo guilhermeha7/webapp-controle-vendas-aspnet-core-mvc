@@ -39,9 +39,13 @@
     {
         <a asp-action="GroupingSearch" asp-route-minDate="@ViewData["minDate"]" asp-route-maxDate="@ViewData["maxDate"]" class="btn btn-outline-secondary">Back to List</a>
     }
-    else 
+    else if ((string)ViewData["IsSimpleSearch"] == "true")
     {
         <a asp-action="SimpleSearch" asp-route-minDate="@ViewData["minDate"]" asp-route-maxDate="@ViewData["maxDate"]" class="btn btn-outline-secondary">Back to List</a>
+    }
+    else
+    {
+        <a asp-action="SessionExpired" class="btn btn-outline-secondary">Back to List</a>
     }
 
 </form>

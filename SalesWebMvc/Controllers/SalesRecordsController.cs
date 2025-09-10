@@ -4,6 +4,7 @@ using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace SalesWebMvc.Controllers
@@ -53,10 +54,10 @@ namespace SalesWebMvc.Controllers
         {
             List<SalesRecord> salesRecords = await _salesRecordService.GetSalesListByDateAsync(minDate, maxDate);
             //ViewData é um dicionário usado para passar dados de uma requisição para a View de retorno
-            
+
             ViewData["minDate"] = minDate.ToString("yyyy-MM-dd"); //Não tem como mostrar um DateTime, pois o atributo value do campo input type="date" espera receber string
             ViewData["maxDate"] = maxDate.ToString("yyyy-MM-dd");
-            
+
             HttpContext.Session.SetString("minDate", minDate.ToString());
             HttpContext.Session.SetString("maxDate", maxDate.ToString());
             HttpContext.Session.SetString("IsSimpleSearch", "true");
@@ -67,7 +68,7 @@ namespace SalesWebMvc.Controllers
         public async Task<IActionResult> GroupingSearch(DateTime minDate, DateTime maxDate)
         {
             var salesRecords = await _salesRecordService.GetSalesListByDepartmentAsync(minDate, maxDate);
-            
+
             ViewData["minDate"] = minDate.ToString("yyyy-MM-dd");
             ViewData["maxDate"] = maxDate.ToString("yyyy-MM-dd");
 
@@ -79,7 +80,7 @@ namespace SalesWebMvc.Controllers
         }
 
         public async Task<IActionResult> Edit(int id)
-        {          
+        {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { Message = "Id not provided" });
@@ -114,13 +115,28 @@ namespace SalesWebMvc.Controllers
 
             if (HttpContext.Session.GetString("IsSimpleSearch") == "false")
             {
-                return RedirectToAction(nameof(GroupingSearch), new { minDate = DateTime.Parse(HttpContext.Session.GetString("minDate")), maxDate = DateTime.Parse(HttpContext.Session.GetString("maxDate")) });
+                try
+                {
+                    return RedirectToAction(nameof(GroupingSearch), new { minDate = DateTime.Parse(HttpContext.Session.GetString("minDate")), maxDate = DateTime.Parse(HttpContext.Session.GetString("maxDate")) });
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction(nameof(SessionExpired));
+                }
+                
             }
             else
             {
-                return RedirectToAction(nameof(SimpleSearch), new { minDate = DateTime.Parse(HttpContext.Session.GetString("minDate")), maxDate = DateTime.Parse(HttpContext.Session.GetString("maxDate"))});
+                try
+                {
+                    return RedirectToAction(nameof(SimpleSearch), new { minDate = DateTime.Parse(HttpContext.Session.GetString("minDate")), maxDate = DateTime.Parse(HttpContext.Session.GetString("maxDate")) });
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction(nameof(SessionExpired));
+                }
             }
-            
+
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -133,7 +149,7 @@ namespace SalesWebMvc.Controllers
 
             if (salesRecord == null)
             {
-                return RedirectToAction(nameof(Error), new { message = "Id not found"});
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(salesRecord);
@@ -154,11 +170,26 @@ namespace SalesWebMvc.Controllers
 
             if (HttpContext.Session.GetString("IsSimpleSearch") == "false")
             {
-                return RedirectToAction(nameof(GroupingSearch), new { minDate = HttpContext.Session.GetString("minDate"), maxDate = HttpContext.Session.GetString("maxDate") });
+                try
+                {
+                    return RedirectToAction(nameof(GroupingSearch), new { minDate = HttpContext.Session.GetString("minDate"), maxDate = HttpContext.Session.GetString("maxDate") });
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction(nameof(SessionExpired));
+                }
+                
             }
             else
             {
-                return RedirectToAction(nameof(SimpleSearch), new { minDate = HttpContext.Session.GetString("minDate"), maxDate = HttpContext.Session.GetString("maxDate") });
+                try
+                {
+                    return RedirectToAction(nameof(SimpleSearch), new { minDate = HttpContext.Session.GetString("minDate"), maxDate = HttpContext.Session.GetString("maxDate") });
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction(nameof(SessionExpired));
+                }
             }
         }
 
@@ -167,7 +198,7 @@ namespace SalesWebMvc.Controllers
             ViewData["IsSimpleSearch"] = HttpContext.Session.GetString("IsSimpleSearch");
             ViewData["minDate"] = HttpContext.Session.GetString("minDate");
             ViewData["maxDate"] = HttpContext.Session.GetString("maxDate");
-            
+
             SalesRecord salesRecord = await _salesRecordService.GetByIdAsync(id);
 
             if (salesRecord == null)
@@ -187,6 +218,11 @@ namespace SalesWebMvc.Controllers
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
             };
             return View(viewModel);
+        }
+
+        public IActionResult SessionExpired()
+        {
+            return View();
         }
     }
 }
