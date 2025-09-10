@@ -38,6 +38,14 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SalesRecord salesRecord)
         {
+            if (!ModelState.IsValid)
+            {
+                List<SelectListItem> statusList = _salesRecordService.GetSaleStatusList();
+                List<Seller> sellersList = await _sellerService.GetSellersListAsync();
+                SalesRecordFormViewModel viewModel = new SalesRecordFormViewModel { SalesRecord = salesRecord, StatusList = statusList, SellersList = sellersList };
+                return View(viewModel);
+            }
+
             await _salesRecordService.InsertAsync(salesRecord);
             return RedirectToAction(nameof(Index));
         }
@@ -94,8 +102,15 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(SalesRecord salesRecord)
         {
-            await _salesRecordService.UpdateAsync(salesRecord);
+            if (!ModelState.IsValid)
+            {
+                List<SelectListItem> statusList = _salesRecordService.GetSaleStatusList();
+                List<Seller> sellersList = await _sellerService.GetSellersListAsync();
+                SalesRecordFormViewModel viewModel = new SalesRecordFormViewModel { SalesRecord = salesRecord, StatusList = statusList, SellersList = sellersList };
+                return View(viewModel);
+            }
 
+            await _salesRecordService.UpdateAsync(salesRecord);
 
             if (HttpContext.Session.GetString("IsSimpleSearch") == "false")
             {

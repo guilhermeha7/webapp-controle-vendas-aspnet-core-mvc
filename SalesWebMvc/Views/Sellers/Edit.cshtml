@@ -9,32 +9,33 @@
     <div class="col-md-3">
         <form asp-action="Edit">
             <input type="hidden" asp-for="Seller.Id" />
-            <div class="mb-4">
+            <div class="mb-3">
                 <label asp-for="Seller.Name" class="form-label"></label>
                 <input asp-for="Seller.Name" class="form-control" />
                 <span asp-validation-for="Seller.Name" class="text-danger"></span>
             </div>
-            <div class="mb-4">
+            <div class="mb-3">
                 <label asp-for="Seller.Email" class="form-label"></label>
                 <input asp-for="Seller.Email" class="form-control" />
                 <span asp-validation-for="Seller.Email" class="text-danger"></span>
             </div>
-            <div class="mb-4">
+            <div class="mb-3">
                 <label asp-for="Seller.BirthDate" class="form-label"></label>
                 <input asp-for="Seller.BirthDate" class="form-control" />
                 <span asp-validation-for="Seller.BirthDate" class="text-danger"></span>
             </div>
-            <div class="mb-4">
+            <div class="mb-3">
                 <label asp-for="Seller.BaseSalary" class="form-label"></label>
                 <input asp-for="Seller.BaseSalary" class="form-control" />
                 <span asp-validation-for="Seller.BaseSalary" class="text-danger"></span>
             </div>
-            <div class="mb-4">
+            <div class="mb-5">
                 <label asp-for="Seller.DepartmentId" class="form-label"></label>
                 <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments, "Id", "Name"))" class="form-select"></select>
             </div>
-            <div class="mb-4">
+            <div class="mb-5">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
             </div>
             
         </form>

@@ -16,22 +16,33 @@
             <div class="mb-3">
                 <label asp-for="SalesRecord.Date" class="control-label"></label>
                 <input asp-for="SalesRecord.Date" class="form-control" />
+                <span asp-validation-for="SalesRecord.Date" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="SalesRecord.Amount" class="control-label"></label>
                 <input asp-for="SalesRecord.Amount" class="form-control" />
+                <span asp-validation-for="SalesRecord.Amount" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="SalesRecord.Status" class="control-label"></label>
                 <select asp-for="SalesRecord.Status" class="form-select" asp-items="@Model.StatusList"></select>
+                <span asp-validation-for="SalesRecord.Status" class="text-danger"></span>
             </div>
-            <div class="mb-3">
+            <div class="mb-5">
                 <label asp-for="SalesRecord.SellerId" class="control-label"></label>
                 <select asp-for="SalesRecord.SellerId" class="form-select" asp-items="@(new SelectList(Model.SellersList, "Id", "Name"))"></select>
+                <span asp-validation-for="SalesRecord.SellerId" class="text-danger"></span>
             </div>
-            <div>
+            <div class="mb-5">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

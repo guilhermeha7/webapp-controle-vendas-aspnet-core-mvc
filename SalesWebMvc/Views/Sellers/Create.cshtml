@@ -29,12 +29,14 @@
                 <input asp-for="Seller.BaseSalary" class="form-control" />
                 <span asp-validation-for="Seller.BaseSalary" class="text-danger"></span>
             </div>
-            <div class="mb-3">
+            <div class="mb-5">
                 <label asp-for="Seller.DepartmentId" class="form-label"></label>
                 <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments,"Id","Name"))" class="form-select"></select>
+                
             </div>
-            <div class="mb-3">
+            <div class="mb-5">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
             </div>
             
         </form>
